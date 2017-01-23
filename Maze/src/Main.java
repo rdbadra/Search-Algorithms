@@ -8,8 +8,11 @@ public class Main{
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
+        JPanel panelito = new JPanel();
         JPanel panel = new MazePanel();
-        frame.add(panel);
+        panelito.add(panel);
+        panelito.add(new ServicePanel());
+        frame.add(panelito);
         frame.setBounds(500, 200, 400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

@@ -52,7 +52,7 @@ public class Board {
             int boardRow = 0;
             int numberPositions = 0;
             String[] ja;
-            br = new BufferedReader(new FileReader("/home/roberto/IdeaProjects/Maze/src/Persistence/maze1.txt"));
+            br = new BufferedReader(new FileReader("/home/roberto/IdeaProjects/Search-Algorithms/Maze/src/Persistence/maze1.txt"));
             while ((currentLine = br.readLine()) != null) {
                 if(currentLine.split(",")[0].equals("0") && numberPositions==0){
                     startingPointRow = Integer.parseInt(currentLine.split(",")[0]);

@@ -8,11 +8,16 @@ import java.awt.*;
 public class MazePanel extends JPanel{
     private Board board;
     private JButton[][] maze;
+    private int value;
 
     public MazePanel(){
         board = new Board();
         createMaze();
         //button1.setBorder(new MatteBorder(30, 0, 0, 0, Color.BLACK));
+    }
+
+    public void bfs(){
+
     }
 
     private void createMaze(){
@@ -29,7 +34,9 @@ public class MazePanel extends JPanel{
                     maze[i][j].setBorder(new MatteBorder(0, 10, 0, 0, Color.BLACK));
                 }
                 if(board.getStartingPointRow() == i && board.getStartingPointColumn() == j){
+                    value = 1;
                     maze[i][j].setName("Start");
+                    maze[i][j].setText(""+value);
                     maze[i][j].setBackground(Color.RED);
                 } else if(board.getEndingPointRow() == i && board.getEndingPointColumn() == j){
                     maze[i][j].setName("Start");

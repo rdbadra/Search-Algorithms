@@ -11,7 +11,7 @@ public class Main{
         JPanel panelito = new JPanel();
         JPanel panel = new MazePanel();
         panelito.add(panel);
-        panelito.add(new ServicePanel());
+        panelito.add(new ServicePanel(panel));
         frame.add(panelito);
         frame.setBounds(500, 200, 400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -8,16 +8,18 @@ import java.awt.*;
 public class MazePanel extends JPanel{
     private Board board;
     private JButton[][] maze;
-    private int value;
 
     public MazePanel(){
         board = new Board();
         createMaze();
-        //button1.setBorder(new MatteBorder(30, 0, 0, 0, Color.BLACK));
+        this.bfs();
+        //button1.setB
+        // order(new MatteBorder(30, 0, 0, 0, Color.BLACK));
     }
 
     public void bfs(){
-
+        Bfs breadthSearch = new Bfs(maze, board);
+        breadthSearch.run();
     }
 
     private void createMaze(){
@@ -30,20 +32,23 @@ public class MazePanel extends JPanel{
         for(int i = 0; i < cellBoard.length; i++){
             for(int j = 0; j < cellBoard[i].length; j++){
                 maze[i][j] = new JButton();
-                if(cellBoard[i][j].getTag().equals("|")){
-                    maze[i][j].setBorder(new MatteBorder(0, 10, 0, 0, Color.BLACK));
-                }
                 if(board.getStartingPointRow() == i && board.getStartingPointColumn() == j){
-                    value = 1;
                     maze[i][j].setName("Start");
-                    maze[i][j].setText(""+value);
-                    maze[i][j].setBackground(Color.RED);
+                    maze[i][j].setBackground(Color.CYAN);
+                    maze[i][j].setActionCommand(i+"-"+j);
                 } else if(board.getEndingPointRow() == i && board.getEndingPointColumn() == j){
-                    maze[i][j].setName("Start");
+                    maze[i][j].setName("End");
                     maze[i][j].setBackground(Color.GREEN);
+                    maze[i][j].setActionCommand(i+"-"+j);
                 } else {
                     maze[i][j].setName("Not");
+                    maze[i][j].setActionCommand(i+"-"+j);
                 }
+                if(cellBoard[i][j].getTag().equals("|")){
+                    maze[i][j].setBorder(new MatteBorder(0, 10, 0, 0, Color.BLACK));
+                    maze[i][j].setActionCommand(i+"|"+j);
+                }
+
                 this.add(maze[i][j]);
             }
 

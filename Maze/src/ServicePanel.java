@@ -6,7 +6,7 @@ import java.awt.*;
  */
 public class ServicePanel extends JPanel {
 
-    public ServicePanel(){
+    public ServicePanel(JPanel mazePanel){
         GridLayout layout = new GridLayout(1, 1, 2, 2);
         this.setLayout(layout);
         this.add(new JButton("BFS"));

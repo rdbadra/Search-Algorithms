@@ -1,3 +1,7 @@
+package view;
+
+import controller.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,9 +44,17 @@ public class ServicePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mazePanel.clean();
-                //main.addMazePanel(new MazePanel());
+                //main.addMazePanel(new view.MazePanel());
             }
         });
         this.add(cleanButton);
+        JButton paintButton = new JButton("Paint");
+        paintButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mazePanel.paintMaze();
+            }
+        });
+        this.add(paintButton);
     }
 }

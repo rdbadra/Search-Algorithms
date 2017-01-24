@@ -1,6 +1,15 @@
+package view;
+
+import controller.Bfs;
+import controller.Dfs;
+import model.Board;
+import model.Cell;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by roberto on 22/01/17.
@@ -20,15 +29,47 @@ public class MazePanel extends JPanel{
         cleanMaze();
     }
 
-    private void cleanMaze() {
-        GridLayout layout = new GridLayout(8, 8, 2, 2);
-        this.setLayout(layout);
-        board = new Board();
+    public void paintMaze(){
         Cell[][] cellBoard = board.getBoard();
-        //board.printBoard();
         for(int i = 0; i < cellBoard.length; i++){
             for(int j = 0; j < cellBoard[i].length; j++){
-                maze[i][j].setText("");
+                maze[i][j].setText("    ");
+                maze[i][j].setBackground(Color.white);
+                maze[i][j].setBorder(new MatteBorder(0, 0, 0, 0, Color.BLACK));
+                maze[i][j].setActionCommand(i+"|"+j);
+                maze[i][j].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JButton cell = (JButton) e.getSource();
+                        cell.setBorder(new MatteBorder(0, 10, 0, 0, Color.BLACK));
+                        String position = cell.getActionCommand();
+                        cell.setActionCommand(position.split("-")[0]+"|"+position.split("-")[1]);
+                    }
+                });
+                if(0 == i && 0 == j){
+                    maze[i][j].setName("Start");
+                    maze[i][j].setBackground(Color.CYAN);
+                    maze[i][j].setActionCommand(i+"-"+j);
+                } else if(0 == i && 4 == j){
+                    maze[i][j].setName("End");
+                    maze[i][j].setBackground(Color.GREEN);
+                    maze[i][j].setActionCommand(i+"-"+j);
+                } else {
+                    maze[i][j].setName("Not");
+                    maze[i][j].setActionCommand(i+"-"+j);
+                }
+
+            }
+
+        }
+    }
+
+    private void cleanMaze() {
+        Cell[][] cellBoard = board.getBoard();
+        for(int i = 0; i < cellBoard.length; i++){
+            for(int j = 0; j < cellBoard[i].length; j++){
+                maze[i][j].setText("   ");
+                maze[i][j].setBackground(Color.white);
                 if(board.getStartingPointRow() == i && board.getStartingPointColumn() == j){
                     maze[i][j].setName("Start");
                     maze[i][j].setBackground(Color.CYAN);
@@ -60,16 +101,21 @@ public class MazePanel extends JPanel{
         breadthSearch.run();
     }
 
-    private void createMaze(){
+    private void initComponents(){
         maze = new JButton[8][8];
         GridLayout layout = new GridLayout(8, 8, 2, 2);
         this.setLayout(layout);
         board = new Board();
+    }
+
+    private void createMaze(){
+        initComponents();
         Cell[][] cellBoard = board.getBoard();
-        //board.printBoard();
         for(int i = 0; i < cellBoard.length; i++){
             for(int j = 0; j < cellBoard[i].length; j++){
                 maze[i][j] = new JButton();
+                maze[i][j].setText("   ");
+                maze[i][j].setBackground(Color.white);
                 if(board.getStartingPointRow() == i && board.getStartingPointColumn() == j){
                     maze[i][j].setName("Start");
                     maze[i][j].setBackground(Color.CYAN);

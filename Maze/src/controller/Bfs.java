@@ -1,58 +1,72 @@
+package controller;
+
+import model.Board;
+import model.SearchQueue;
+
 import javax.swing.*;
-import java.awt.*;
-import java.util.Stack;
 
 /**
- * Created by roberto on 24/01/17.
+ * Created by roberto on 23/01/17.
  */
-public class Dfs {
-    private Stack<JButton> stack;
+public class Bfs {
     private Board board;
     private JButton[][] maze;
+    private SearchQueue queue = new SearchQueue();
     private int value;
 
-    public Dfs(Board board, JButton[][] maze) {
-        stack = new Stack<>();
+    public Bfs(JButton[][] maze, Board board) {
         this.board = board;
+        this.value = 0;
         this.maze = maze;
-        value = 0;
     }
 
     public void run() throws InterruptedException {
-        stack.push(maze[board.getStartingPointRow()][board.getStartingPointColumn()]);
-        JButton currentNode = (JButton) stack.pop();
+        queue.add(maze[board.getStartingPointRow()][board.getStartingPointColumn()]);
+        JButton currentNode = (JButton) queue.remove();
         while(currentNode.getName().equals("End")==false){
             value++;
+            System.out.println(currentNode.getActionCommand());
+            System.out.println(value);
             currentNode.setText(""+value);
-            //if(!isOriginal(currentNode) || !currentNode.getName().equals("End")) currentNode.setBackground(Color.pink);
             currentNode.setName("Visited");
             expandNodes(currentNode);
-            currentNode = (JButton) stack.pop();
+            currentNode = (JButton) queue.remove();
         }
+    }
+
+    private boolean isOriginal(JButton cell) {
+        String position = cell.getActionCommand();
+        int positionRow = getPositionRow(position, cell);
+        int positionColumn = getPositionColumn(position, cell);
+        if (positionRow == board.getEndingPointRow() && positionColumn == board.getStartingPointColumn()) {
+            return true;
+        }
+        return false;
     }
 
     private void expandNodes(JButton cell){
         String position = cell.getActionCommand();
-        //System.out.println(position);
         int positionRow = getPositionRow(position, cell);
         int positionColumn = getPositionColumn(position, cell);
         getNearNodes(cell, positionRow, positionColumn);
     }
 
-    private void getNearNodes(JButton cell, int positionRow, int positionColumn) {
-        getNodeRight(cell, positionRow, positionColumn);
-        getNodeLeft(cell, positionRow, positionColumn);
-        getNodeDown(cell, positionRow, positionColumn);
-        getNodeUp(cell, positionRow, positionColumn);
-
+    private void getNearNodes(JButton cell, int positionRow, int positionColumn){
+        getNodesInOrder(cell, positionRow, positionColumn);
     }
 
+    private void getNodesInOrder(JButton cell, int positionRow, int positionColumn){
+        getNodeUp(cell, positionRow, positionColumn);
+        getNodeDown(cell, positionRow, positionColumn);
+        getNodeLeft(cell, positionRow, positionColumn);
+        getNodeRight(cell, positionRow, positionColumn);
+    }
 
     private void getNodeRight(JButton cell, int positionRow, int positionColumn) {
         if (checkItIsIn(maze, positionRow, positionColumn + 1)) {
             if ((!maze[positionRow][positionColumn + 1].getName().equals("Visited") || !maze[positionRow][positionColumn + 1].getName().equals("Expanded")) && !checkCellHasWall(maze[positionRow][positionColumn + 1])) {
                 if (!maze[positionRow][positionColumn + 1].getName().equals("Expanded")) {
-                    stack.push(maze[positionRow][positionColumn + 1]);
+                    queue.add(maze[positionRow][positionColumn + 1]);
                     if(!maze[positionRow][positionColumn + 1].getName().equals("End")){
                         maze[positionRow][positionColumn + 1].setName("Expanded");
                     }
@@ -66,9 +80,9 @@ public class Dfs {
         if (checkItIsIn(maze, positionRow, positionColumn - 1)) {
             if (!maze[positionRow][positionColumn - 1].getName().equals("Visited") && !checkCellHasWall(maze[positionRow][positionColumn])) {
                 if (!maze[positionRow][positionColumn - 1].getName().equals("Expanded")) {
-                    stack.push(maze[positionRow][positionColumn - 1]);
-                    if(!maze[positionRow][positionColumn-1].getName().equals("End")){
-                        maze[positionRow][positionColumn-1].setName("Expanded");
+                    queue.add(maze[positionRow][positionColumn - 1]);
+                    if(!maze[positionRow][positionColumn - 1].getName().equals("End")){
+                        maze[positionRow][positionColumn - 1].setName("Expanded");
                     }
                     maze[positionRow][positionColumn - 1].setText("" + value);
                 }
@@ -80,7 +94,7 @@ public class Dfs {
         if (checkItIsIn(maze, positionRow + 1, positionColumn)) {
             if (!maze[positionRow + 1][positionColumn].getName().equals("Visited")) {
                 if (!maze[positionRow + 1][positionColumn].getName().equals("Expanded")) {
-                    stack.push(maze[positionRow + 1][positionColumn]);
+                    queue.add(maze[positionRow + 1][positionColumn]);
                     if(!maze[positionRow + 1][positionColumn].getName().equals("End")){
                         maze[positionRow + 1][positionColumn].setName("Expanded");
                     }
@@ -94,7 +108,7 @@ public class Dfs {
         if (checkItIsIn(maze, positionRow - 1, positionColumn)) {
             if (!maze[positionRow - 1][positionColumn].getName().equals("Visited")) {
                 if (!maze[positionRow - 1][positionColumn].getName().equals("Expanded")) {
-                    stack.push(maze[positionRow - 1][positionColumn]);
+                    queue.add(maze[positionRow - 1][positionColumn]);
                     if(!maze[positionRow - 1][positionColumn].getName().equals("End")){
                         maze[positionRow - 1][positionColumn].setName("Expanded");
                     }
@@ -104,9 +118,9 @@ public class Dfs {
         }
     }
 
-    private void printNode(JButton cell) {
-        System.out.println(cell.getActionCommand());
-    }
+    //private void printNode(JButton cell) {
+    //    System.out.println(cell.getActionCommand());
+    //}
 
     private boolean checkCellHasWall(JButton cell) {
         if (cell.getActionCommand().split("")[1].equals("|")) {
@@ -126,7 +140,7 @@ public class Dfs {
         return true;
     }
 
-    public int getPositionRow(String position, JButton cell) {
+    public int getPositionRow(String position, JButton cell){
         int positionRow;
         if (checkCellHasWall(cell) == false) {
             positionRow = Integer.parseInt(position.split("-")[0]);
@@ -136,7 +150,7 @@ public class Dfs {
         return positionRow;
     }
 
-    private int getPositionColumn(String position, JButton cell) {
+    private int getPositionColumn(String position, JButton cell){
         int positionColumn;
         if (checkCellHasWall(cell) == false) {
             positionColumn = Integer.parseInt(position.split("-")[1]);
@@ -144,16 +158,5 @@ public class Dfs {
             positionColumn = Integer.parseInt(position.split("\\|")[1]);
         }
         return positionColumn;
-    }
-
-    private boolean isOriginal(JButton cell) {
-        String position = cell.getActionCommand();
-        int positionRow = getPositionRow(position, cell);
-        int positionColumn = getPositionColumn(position, cell);
-        if (positionRow == board.getEndingPointRow() && positionColumn == board.getStartingPointColumn()) {
-            return true;
-        }
-        return false;
-
     }
 }

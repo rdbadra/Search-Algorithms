@@ -1,3 +1,5 @@
+package model;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -22,8 +24,6 @@ public class SearchQueue {
     public JButton remove(){
         System.out.println(queue.size());
         JButton cell = queue.get(0);
-        System.out.println(cell.getActionCommand());
-        System.out.println(queue.size());
         queue.remove(0);
         return cell;
     }

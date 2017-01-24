@@ -1,5 +1,9 @@
+package controller;
+
+import view.MazePanel;
+import view.ServicePanel;
+
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Created by roberto on 21/01/17.
@@ -30,7 +34,7 @@ public class Main{
 
         new Main();
 
-        //Board ja = new Board();
+        //model.Board ja = new model.Board();
         //ja.printBoard();
 
     }

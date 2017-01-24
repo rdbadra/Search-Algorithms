@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
  */
 public class ServicePanel extends JPanel {
 
-    public ServicePanel(MazePanel mazePanel){
+    public ServicePanel(Main main, MazePanel mazePanel){
         GridLayout layout = new GridLayout(1, 1, 2, 2);
         this.setLayout(layout);
         JButton bfs = new JButton("BFS");
@@ -35,5 +35,14 @@ public class ServicePanel extends JPanel {
             }
         });
         this.add(dfs);
+        JButton cleanButton = new JButton("Clean");
+        cleanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mazePanel.clean();
+                //main.addMazePanel(new MazePanel());
+            }
+        });
+        this.add(cleanButton);
     }
 }

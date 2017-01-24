@@ -24,6 +24,11 @@ public class Board {
 
     }
 
+    public void cleanBoard(){
+        fillWithDots();
+        createBoard();
+    }
+
     private void printBoard() {
         for(int i = 0; i < board.length; i++){
             for( int j = 0; j < board[i].length; j++){

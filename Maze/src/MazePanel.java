@@ -12,12 +12,17 @@ public class MazePanel extends JPanel{
     public MazePanel(){
         board = new Board();
         createMaze();
-        this.bfs();
+
         //button1.setB
         // order(new MatteBorder(30, 0, 0, 0, Color.BLACK));
     }
 
-    public void bfs(){
+    public void dfs() throws InterruptedException {
+        Dfs depthSearch = new Dfs(board, maze);
+        depthSearch.run();
+    }
+
+    public void bfs() throws InterruptedException {
         Bfs breadthSearch = new Bfs(maze, board);
         breadthSearch.run();
     }

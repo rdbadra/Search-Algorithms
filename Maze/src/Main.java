@@ -6,16 +6,22 @@ import java.awt.*;
  */
 public class Main{
 
-    public static void main(String[] args) {
+    public Main(){
         JFrame frame = new JFrame();
         JPanel panelito = new JPanel();
-        JPanel panel = new MazePanel();
+        MazePanel panel = new MazePanel();
         panelito.add(panel);
         panelito.add(new ServicePanel(panel));
         frame.add(panelito);
         frame.setBounds(500, 200, 400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        new Main();
+
         //Board ja = new Board();
         //ja.printBoard();
 

@@ -11,9 +11,11 @@ import java.awt.event.ActionListener;
  * Created by roberto on 23/01/17.
  */
 public class ServicePanel extends JPanel {
+    private JLabel timeBfs = new JLabel("Time BFS: ");
+    private JLabel timeDfs = new JLabel("Time DFS: ");
 
-    public ServicePanel(Main main, MazePanel mazePanel){
-        GridLayout layout = new GridLayout(1, 1, 2, 2);
+    public ServicePanel(MazePanel mazePanel){
+        GridLayout layout = new GridLayout(4, 4, 2, 2);
         this.setLayout(layout);
         JButton bfs = new JButton("BFS");
         bfs.addActionListener(new ActionListener() {
@@ -56,5 +58,29 @@ public class ServicePanel extends JPanel {
             }
         });
         this.add(paintButton);
+        JButton compareTimes = new JButton("Compare Times");
+        compareTimes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    mazePanel.bfs();
+                    mazePanel.clean();
+                    mazePanel.dfs();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        this.add(compareTimes);
+        this.add(timeBfs);
+        this.add(timeDfs);
+    }
+
+    public void setTimeBfs(double time){
+        this.timeBfs.setText("Time: "+time);
+    }
+
+    public void setTimeDfs(double time){
+        this.timeDfs.setText("Time: "+time);
     }
 }

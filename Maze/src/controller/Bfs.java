@@ -2,6 +2,7 @@ package controller;
 
 import model.Board;
 import model.SearchQueue;
+import view.ServicePanel;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -17,16 +18,20 @@ public class Bfs {
     private JButton[][] maze;
     private Queue queue = new LinkedList<>();
     private int value;
+    private ServicePanel servicePanel;
 
-    public Bfs(JButton[][] maze, Board board) {
+    public Bfs(JButton[][] maze, Board board, ServicePanel servicePanel) {
         this.board = board;
         this.value = 0;
         this.maze = maze;
+        this.servicePanel = servicePanel;
     }
 
-    public void run() throws InterruptedException {
+    public void run(){
+
         queue.add(maze[board.getStartingPointRow()][board.getStartingPointColumn()]);
         JButton currentNode;
+        Date start = new Date();
         while (!queue.isEmpty()) {
             while ((currentNode = (JButton) queue.remove()) != null || currentNode.getName().equals("End") == false) {
                 value++;
@@ -35,8 +40,14 @@ public class Bfs {
                 currentNode.setText("" + value);
                 currentNode.setName("Visited");
                 expandNodes(currentNode);
+                if(value == 64){
+                    break;
+                }
             }
         }
+        Date end = new Date();
+        double time = (end.getTime() - start.getTime())/(double)10;
+        servicePanel.setTimeBfs(time);
     }
 
     private boolean isOriginal(JButton cell) {
@@ -52,9 +63,7 @@ public class Bfs {
     private void expandNodes(JButton cell) {
         String position = cell.getActionCommand();
         int positionRow = getPositionRow(position, cell);
-        System.out.println("row:"+positionRow);
         int positionColumn = getPositionColumn(position, cell);
-        System.out.println("col:"+positionColumn);
         getNearNodes(cell, positionRow, positionColumn);
     }
 
@@ -77,8 +86,6 @@ public class Bfs {
                     if (!maze[positionRow][positionColumn + 1].getName().equals("End")) {
                         maze[positionRow][positionColumn + 1].setName("Expanded");
                     }
-                    System.out.println("R:"+maze[positionRow][positionColumn + 1].getActionCommand());
-                    //maze[positionRow][positionColumn + 1].setText("" + value);
                 }
             }
         }
@@ -92,8 +99,6 @@ public class Bfs {
                     if (!maze[positionRow][positionColumn - 1].getName().equals("End")) {
                         maze[positionRow][positionColumn - 1].setName("Expanded");
                     }
-                    System.out.println("L:"+maze[positionRow][positionColumn - 1].getActionCommand());
-                    //maze[positionRow][positionColumn - 1].setText("" + value);
                 }
             }
         }
@@ -107,8 +112,6 @@ public class Bfs {
                     if (!maze[positionRow + 1][positionColumn].getName().equals("End")) {
                         maze[positionRow + 1][positionColumn].setName("Expanded");
                     }
-                    System.out.println("D:"+maze[positionRow+1][positionColumn].getActionCommand());
-                    //maze[positionRow + 1][positionColumn].setText("" + value);
                 }
             }
         }
@@ -122,8 +125,6 @@ public class Bfs {
                     if (!maze[positionRow - 1][positionColumn].getName().equals("End")) {
                         maze[positionRow - 1][positionColumn].setName("Expanded");
                     }
-                    System.out.println("U:"+maze[positionRow-1][positionColumn].getActionCommand());
-                    //maze[positionRow - 1][positionColumn].setText("" + value);
                 }
             }
         }
@@ -166,7 +167,6 @@ public class Bfs {
     public int getPositionRow(String position, JButton cell) {
         int positionRow;
         if ((checkCellHasLeftWall(cell) == false) && (checkCellHasDownWall(cell) == false)) {
-            System.out.println("hello");
             positionRow = Integer.parseInt(position.split("\\+")[0]);
         } else {
             if (cell.getActionCommand().split("")[1].equals("|")) {

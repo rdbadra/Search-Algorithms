@@ -1,5 +1,6 @@
 package controller;
 
+import view.BigPanel;
 import view.MazePanel;
 import view.ServicePanel;
 
@@ -13,21 +14,12 @@ public class Main{
     ServicePanel servicePanel;
 
     public Main(){
-        MazePanel mazePanel = new MazePanel();
-        servicePanel = new ServicePanel(this, mazePanel);
-        JFrame frame = new JFrame();
-        panelito = new JPanel();
-
-        panelito.add(mazePanel);
-        panelito.add(servicePanel);
-        frame.add(panelito);
+        JFrame frame = new JFrame("Search Algorithms");
+        BigPanel bigPanel = new BigPanel();
+        frame.add(bigPanel);
         frame.setBounds(500, 200, 400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-    }
-
-    public void addMazePanel(MazePanel mazePanel){
-        panelito.add(mazePanel);
     }
 
     public static void main(String[] args) throws InterruptedException {

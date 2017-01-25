@@ -4,6 +4,10 @@ import model.Board;
 import model.SearchQueue;
 
 import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
 
 /**
  * Created by roberto on 23/01/17.
@@ -11,8 +15,9 @@ import javax.swing.*;
 public class Bfs {
     private Board board;
     private JButton[][] maze;
-    private SearchQueue queue = new SearchQueue();
+    private Queue queue = new LinkedList<>();
     private int value;
+    private JButton currentNode;
 
     public Bfs(JButton[][] maze, Board board) {
         this.board = board;
@@ -22,15 +27,26 @@ public class Bfs {
 
     public void run() throws InterruptedException {
         queue.add(maze[board.getStartingPointRow()][board.getStartingPointColumn()]);
-        JButton currentNode = (JButton) queue.remove();
-        while(currentNode.getName().equals("End")==false){
-            value++;
-            System.out.println(currentNode.getActionCommand());
-            System.out.println(value);
-            currentNode.setText(""+value);
-            currentNode.setName("Visited");
-            expandNodes(currentNode);
-            currentNode = (JButton) queue.remove();
+        //currentNode;
+        ActionListener action = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                expandNodes(currentNode);
+            }
+        };
+        Timer timer = new javax.swing.Timer(500, action);
+
+        while(!queue.isEmpty()){
+            while((currentNode = (JButton) queue.remove())!=null || currentNode.getName().equals("End")==false){
+                value++;
+                System.out.println(currentNode.getActionCommand());
+                System.out.println(value);
+                currentNode.setText(""+value);
+                currentNode.setName("Visited");
+                expandNodes(currentNode);
+                //timer.setInitialDelay(200);
+                //timer.start();
+            }
         }
     }
 
@@ -57,8 +73,8 @@ public class Bfs {
 
     private void getNodesInOrder(JButton cell, int positionRow, int positionColumn){
         getNodeUp(cell, positionRow, positionColumn);
-        getNodeDown(cell, positionRow, positionColumn);
         getNodeLeft(cell, positionRow, positionColumn);
+        getNodeDown(cell, positionRow, positionColumn);
         getNodeRight(cell, positionRow, positionColumn);
     }
 
@@ -70,7 +86,7 @@ public class Bfs {
                     if(!maze[positionRow][positionColumn + 1].getName().equals("End")){
                         maze[positionRow][positionColumn + 1].setName("Expanded");
                     }
-                    maze[positionRow][positionColumn + 1].setText("" + value);
+                    //maze[positionRow][positionColumn + 1].setText("" + value);
                 }
             }
         }
@@ -84,7 +100,7 @@ public class Bfs {
                     if(!maze[positionRow][positionColumn - 1].getName().equals("End")){
                         maze[positionRow][positionColumn - 1].setName("Expanded");
                     }
-                    maze[positionRow][positionColumn - 1].setText("" + value);
+                    //maze[positionRow][positionColumn - 1].setText("" + value);
                 }
             }
         }
@@ -98,7 +114,7 @@ public class Bfs {
                     if(!maze[positionRow + 1][positionColumn].getName().equals("End")){
                         maze[positionRow + 1][positionColumn].setName("Expanded");
                     }
-                    maze[positionRow + 1][positionColumn].setText("" + value);
+                    //maze[positionRow + 1][positionColumn].setText("" + value);
                 }
             }
         }
@@ -112,7 +128,7 @@ public class Bfs {
                     if(!maze[positionRow - 1][positionColumn].getName().equals("End")){
                         maze[positionRow - 1][positionColumn].setName("Expanded");
                     }
-                    maze[positionRow - 1][positionColumn].setText("" + value);
+                    //maze[positionRow - 1][positionColumn].setText("" + value);
                 }
             }
         }

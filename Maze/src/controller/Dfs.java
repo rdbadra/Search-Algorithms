@@ -3,6 +3,7 @@ package controller;
 import model.Board;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Stack;
 
 /**
@@ -23,14 +24,19 @@ public class Dfs {
 
     public void run() throws InterruptedException {
         stack.push(maze[board.getStartingPointRow()][board.getStartingPointColumn()]);
-        JButton currentNode = (JButton) stack.pop();
-        while(currentNode.getName().equals("End")==false){
-            value++;
-            currentNode.setText(""+value);
-            //if(!isOriginal(currentNode) || !currentNode.getName().equals("End")) currentNode.setBackground(Color.pink);
-            currentNode.setName("Visited");
-            expandNodes(currentNode);
-            currentNode = (JButton) stack.pop();
+        JButton currentNode;
+        while(!stack.isEmpty()){
+
+            while((currentNode = (JButton) stack.pop())!=null || currentNode.getName().equals("End")==false){
+                value++;
+                System.out.println(value);
+                currentNode.setText(""+value);
+                //currentNode.setBackground(Color.YELLOW);
+                //if(!isOriginal(currentNode) || !currentNode.getName().equals("End")) currentNode.setBackground(Color.pink);
+                currentNode.setName("Visited");
+                expandNodes(currentNode);
+
+            }
         }
     }
 
@@ -44,22 +50,23 @@ public class Dfs {
 
     private void getNearNodes(JButton cell, int positionRow, int positionColumn) {
         getNodeRight(cell, positionRow, positionColumn);
-        getNodeLeft(cell, positionRow, positionColumn);
         getNodeDown(cell, positionRow, positionColumn);
+        getNodeLeft(cell, positionRow, positionColumn);
         getNodeUp(cell, positionRow, positionColumn);
+
 
     }
 
 
     private void getNodeRight(JButton cell, int positionRow, int positionColumn) {
         if (checkItIsIn(maze, positionRow, positionColumn + 1)) {
-            if ((!maze[positionRow][positionColumn + 1].getName().equals("Visited") || !maze[positionRow][positionColumn + 1].getName().equals("Expanded")) && !checkCellHasWall(maze[positionRow][positionColumn + 1])) {
+            if ((!maze[positionRow][positionColumn + 1].getName().equals("Visited") && !checkCellHasWall(maze[positionRow][positionColumn + 1]))){
                 if (!maze[positionRow][positionColumn + 1].getName().equals("Expanded")) {
                     stack.push(maze[positionRow][positionColumn + 1]);
                     if(!maze[positionRow][positionColumn + 1].getName().equals("End")){
                         maze[positionRow][positionColumn + 1].setName("Expanded");
                     }
-                    maze[positionRow][positionColumn + 1].setText("" + value);
+                    //maze[positionRow][positionColumn + 1].setText("" + value);
                 }
             }
         }
@@ -73,7 +80,7 @@ public class Dfs {
                     if(!maze[positionRow][positionColumn-1].getName().equals("End")){
                         maze[positionRow][positionColumn-1].setName("Expanded");
                     }
-                    maze[positionRow][positionColumn - 1].setText("" + value);
+                    //maze[positionRow][positionColumn - 1].setText("" + value);
                 }
             }
         }
@@ -87,7 +94,7 @@ public class Dfs {
                     if(!maze[positionRow + 1][positionColumn].getName().equals("End")){
                         maze[positionRow + 1][positionColumn].setName("Expanded");
                     }
-                    maze[positionRow + 1][positionColumn].setText("" + value);
+                    //maze[positionRow + 1][positionColumn].setText("" + value);
                 }
             }
         }
@@ -101,7 +108,7 @@ public class Dfs {
                     if(!maze[positionRow - 1][positionColumn].getName().equals("End")){
                         maze[positionRow - 1][positionColumn].setName("Expanded");
                     }
-                    maze[positionRow - 1][positionColumn].setText("" + value);
+                    //maze[positionRow - 1][positionColumn].setText("" + value);
                 }
             }
         }

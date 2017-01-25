@@ -58,7 +58,7 @@ public class Board {
             int boardRow = 0;
             int numberPositions = 0;
             String[] ja;
-            br = new BufferedReader(new FileReader("/home/roberto/IdeaProjects/Search-Algorithms/Maze/src/Persistence/maze1.txt"));
+            br = new BufferedReader(new FileReader("/home/roberto/IdeaProjects/Search-Algorithms/Maze/src/Persistence/maze3.txt"));
             while ((currentLine = br.readLine()) != null) {
                 if(currentLine.split(",")[0].equals("0") && numberPositions==0){
                     startingPointRow = Integer.parseInt(currentLine.split(",")[0]);
@@ -72,8 +72,14 @@ public class Board {
                 } else {
                     String array[] = currentLine.split("");
                     for(int i = 0; i < array.length; i++){
-                        if(array[i].equals("|")){
-                            board[boardRow][i].setTag(array[i]);
+                        if(array[i].equals("0")){
+                            board[boardRow][i].setTag("");
+                        } else if(array[i].equals("1")) {
+                            board[boardRow][i].setTag("|");
+                        } else if(array[i].equals("2")) {
+                            board[boardRow][i].setTag("-");
+                        } else if(array[i].equals("3")) {
+                            board[boardRow][i].setTag("*");
                         }
                     }
                 }

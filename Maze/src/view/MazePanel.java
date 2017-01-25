@@ -73,22 +73,35 @@ public class MazePanel extends JPanel{
                 if(board.getStartingPointRow() == i && board.getStartingPointColumn() == j){
                     maze[i][j].setName("Start");
                     maze[i][j].setBackground(Color.CYAN);
-                    maze[i][j].setActionCommand(i+"-"+j);
+                    maze[i][j].setActionCommand(i+"+"+j);
                 } else if(board.getEndingPointRow() == i && board.getEndingPointColumn() == j){
                     maze[i][j].setName("End");
                     maze[i][j].setBackground(Color.GREEN);
-                    maze[i][j].setActionCommand(i+"-"+j);
+                    maze[i][j].setActionCommand(i+"+"+j);
                 } else {
                     maze[i][j].setName("Not");
-                    maze[i][j].setActionCommand(i+"-"+j);
+                    maze[i][j].setActionCommand(i+"+"+j);
                 }
+                //left wall
                 if(cellBoard[i][j].getTag().equals("|")){
                     maze[i][j].setBorder(new MatteBorder(0, 10, 0, 0, Color.BLACK));
                     maze[i][j].setActionCommand(i+"|"+j);
+                    //wall down
+                } else if(cellBoard[i][j].getTag().equals("-")){
+                    maze[i][j].setBorder(new MatteBorder(0, 0, 10, 0, Color.BLACK));
+                    maze[i][j].setActionCommand(i+"-"+j);
+                    //wall left and down
+                } else if(cellBoard[i][j].getTag().equals("*")){
+                    maze[i][j].setBorder(new MatteBorder(0, 10, 10, 0, Color.BLACK));
+                    maze[i][j].setActionCommand(i+"*"+j);
                 }
             }
 
         }
+    }
+
+    private void editCell(){
+
     }
 
     public void dfs() throws InterruptedException {
@@ -119,18 +132,27 @@ public class MazePanel extends JPanel{
                 if(board.getStartingPointRow() == i && board.getStartingPointColumn() == j){
                     maze[i][j].setName("Start");
                     maze[i][j].setBackground(Color.CYAN);
-                    maze[i][j].setActionCommand(i+"-"+j);
+                    maze[i][j].setActionCommand(i+"+"+j);
                 } else if(board.getEndingPointRow() == i && board.getEndingPointColumn() == j){
                     maze[i][j].setName("End");
                     maze[i][j].setBackground(Color.GREEN);
-                    maze[i][j].setActionCommand(i+"-"+j);
+                    maze[i][j].setActionCommand(i+"+"+j);
                 } else {
                     maze[i][j].setName("Not");
-                    maze[i][j].setActionCommand(i+"-"+j);
+                    maze[i][j].setActionCommand(i+"+"+j);
                 }
+                //left wall
                 if(cellBoard[i][j].getTag().equals("|")){
                     maze[i][j].setBorder(new MatteBorder(0, 10, 0, 0, Color.BLACK));
                     maze[i][j].setActionCommand(i+"|"+j);
+                    //wall down
+                } else if(cellBoard[i][j].getTag().equals("-")){
+                    maze[i][j].setBorder(new MatteBorder(0, 0, 10, 0, Color.BLACK));
+                    maze[i][j].setActionCommand(i+"-"+j);
+                    //wall left and down
+                } else if(cellBoard[i][j].getTag().equals("*")){
+                    maze[i][j].setBorder(new MatteBorder(0, 10, 10, 0, Color.BLACK));
+                    maze[i][j].setActionCommand(i+"*"+j);
                 }
 
                 this.add(maze[i][j]);
